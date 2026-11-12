@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Compliance Blueprint</title>
+    <style>
+        :root {
+            --bg-color: #edf5ff;
+            --dot-color: #d1e4ff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(var(--dot-color) 2px, transparent 2px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.08);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+
+        .form-group {
+            flex: 1;
+            text-align: left;
+        }
+
+        .form-group.full {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #ffffff;
+            transition: all 0.2s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid #cbd5e1;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .view-section {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        .report-content {
+            text-align: left;
+            margin-bottom: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            max-height: 55vh;
+            overflow-y: auto;
+        }
+
+        .report-content ul {
+            list-style: none;
+        }
+
+        .report-content li {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #334155;
+        }
+        
+        .report-content li:last-child {
+            border-bottom: none;
+        }
+
+        .report-content strong {
+            display: block;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+
+        .disclaimer {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #cbd5e1;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- View 1: Home -->
+        <div id="view-home" class="view-section active">
+            <h1>Easy Compliance Blueprint</h1>
+            <p>Answer a few simple questions about your business setup to get a clear, plain-English checklist of the licenses and rules you need to follow.</p>
+            <button onclick="navigate('view-questions')">Start Assessment</button>
+        </div>
+
+        <!-- View 2: Form Input -->
+        <div id="view-questions" class="view-section">
+            <h1 style="text-align: left;">About Your Setup</h1>
+            <p style="text-align: left;">Tell us about your clinic or commercial space so we can map out your legal steps.</p>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="state">Operating State</label>
+                    <select id="state">
+                        <option value="" selected disabled>Select your state...</option>
+                        <option value="AP">Andhra Pradesh</option>
+                        <option value="AR">Arunachal Pradesh</option>
+                        <option value="AS">Assam</option>
+                        <option value="BR">Bihar</option>
+                        <option value="CG">Chhattisgarh</option>
+                        <option value="GA">Goa</option>
+                        <option value="GJ">Gujarat</option>
+                        <option value="HR">Haryana</option>
+                        <option value="HP">Himachal Pradesh</option>
+                        <option value="JH">Jharkhand</option>
+                        <option value="KA">Karnataka</option>
+                        <option value="KL">Kerala</option>
+                        <option value="MP">Madhya Pradesh</option>
+                        <option value="MH">Maharashtra</option>
+                        <option value="MN">Manipur</option>
+                        <option value="ML">Meghalaya</option>
+                        <option value="MZ">Mizoram</option>
+                        <option value="NL">Nagaland</option>
+                        <option value="OR">Odisha</option>
+                        <option value="PB">Punjab</option>
+                        <option value="RJ">Rajasthan</option>
+                        <option value="SK">Sikkim</option>
+                        <option value="TN">Tamil Nadu</option>
+                        <option value="TS">Telangana</option>
+                        <option value="TR">Tripura</option>
+                        <option value="UP">Uttar Pradesh</option>
+                        <option value="UK">Uttarakhand</option>
+                        <option value="WB">West Bengal</option>
+                        <option value="DL">Delhi (UT)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="employees">Number of Employees</label>
+                    <input type="number" id="employees" placeholder="e.g., 5" min="0">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="height">Building Height (in Meters)</label>
+                    <input type="number" id="height" placeholder="e.g., 10" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="area">Shop Floor Area (in Sq. Meters)</label>
+                    <input type="number" id="area" placeholder="e.g., 400" min="0">
+                </div>
+            </div>
+
+            <div class="form-group full">
+                <label for="aesthetic">Will you offer Advanced Aesthetics, Lasers, or Hair Transplants?</label>
+                <select id="aesthetic">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group full">
+                <label for="chemicals">Will you use chemical peels or hazardous chemical liquids?</label>
+                <select id="chemicals">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group full">
+                <label for="supplements">Will you sell health foods or dietary supplements?</label>
+                <select id="supplements">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+
+            <button onclick="generateReport()">Generate My Action Plan</button>
+            <button class="btn-secondary" onclick="navigate('view-home')">Back</button>
+        </div>
+
+        <!-- View 3: Output Report -->
+        <div id="view-report" class="view-section">
+            <h1 style="text-align: left;">Your Action Plan</h1>
+            <p style="text-align: left;">Here is what you need to do to stay fully compliant, written in plain English:</p>
+            
+            <div class="report-content" id="report-output">
+                <!-- Javascript will inject rules here -->
+            </div>
+
+            <button onclick="navigate('view-home')">Start Over</button>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                ⚠️ This checklist is for a general idea to help you get started. Please verify the latest local rules before opening.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function navigate(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function generateReport() {
+            const state = document.getElementById('state').value;
+            if (!state) {
+                alert("Please select a state to continue.");
+                return;
+            }
+
+            const employees = parseInt(document.getElementById('employees').value) || 0;
+            const height = parseFloat(document.getElementById('height').value) || 0;
+            const area = parseFloat(document.getElementById('area').value) || 0;
+            
+            // "Yes" or "No" variables
+            const aesthetic = document.getElementById('aesthetic').value;
+            const chemicals = document.getElementById('chemicals').value;
+            const supplements = document.getElementById('supplements').value;
+
+            let report = '<ul>';
+
+            // 1. Data Governance (Simple terms)
+            if (['UP', 'TN', 'TS', 'WB'].includes(state)) {
+                report += '<li><strong>📝 Basic Paperwork:</strong> Before you apply for anything, double-check that your Company Name, Address, PAN, and GST number are spelled exactly the same everywhere. Your state uses an automated system that will instantly reject you if there is a mismatch.</li>';
+            } else {
+                report += '<li><strong>📝 Basic Paperwork:</strong> Keep a clear, matching set of documents (Property Deed, Landlord NOC, PAN Card). Make sure the address and names match perfectly on all of them before uploading them to any government portal.</li>';
+            }
+
+            // 2. Signboards & Local Language
+            if (state === 'TN' || state === 'TS') {
+                report += '<li><strong>🪧 Signboard Setup:</strong> You must put up your main shop signboard in the local language (Tamil/Telugu) *before* you even apply for your shop license. The online form requires a photograph of the board already hung up.</li>';
+            } else if (state === 'KA') {
+                report += '<li><strong>🪧 Signboard Setup:</strong> Your signboard needs to be exactly 7 feet wide and 3 feet tall. Make it sky blue (if you practice Allopathy) or light green (if AYUSH), and print your KPME registration number clearly on it.</li>';
+            } else if (state === 'KL') {
+                report += '<li><strong>🪧 Reception Display:</strong> Print a board showing your patients rights, service prices, and the name of the grievance officer. Hang it at your reception in both English and Malayalam.</li>';
+            }
+
+            // 3. Shop & Employee Rules
+            if (state === 'UP' && employees < 20) {
+                report += '<li><strong>🏢 Shop License Exemption:</strong> Good news! Because you have fewer than 20 employees, you don\'t need to do the standard Shops & Establishments registration in UP.</li>';
+            } else if (state === 'UK' && employees < 10) {
+                report += '<li><strong>🏢 Shop License Exemption:</strong> Since you have under 10 employees, you don\'t need a standard registration. Just go online and submit "Form D" to inform the government you are open (it\'s completely free).</li>';
+            } else if (employees > 0) {
+                report += '<li><strong>🏢 Employee Management:</strong> Make sure you give formal appointment letters to your staff and provide proper seating arrangements at the workplace as required by labor laws.</li>';
+            }
+
+            // 4. Fire Safety
+            if (state === 'UK' && (height >= 12 || area > 500)) {
+                report += '<li><strong>🔥 Fire Safety:</strong> Because your building is tall (12+ meters) or large (500+ sq meters), you have to apply for a strict "Fire NOC" from the Chief Fire Officer.</li>';
+            } else if (state === 'WB') {
+                report += '<li><strong>🔥 Fire Safety:</strong> When applying for fire clearances, expect to pay a fee based on the size of your floor (for example, Category B clinics pay around ₹26.52 per square meter).</li>';
+            } else if ((state === 'TN' || state === 'UP') && aesthetic === 'Yes') {
+                report += '<li><strong>🔥 Fire Safety:</strong> Because you do medical procedures, the government is very strict. You must get a full Fire NOC, regardless of how small or short your building is.</li>';
+            } else if (height < 21) {
+                report += '<li><strong>🔥 Fire Safety:</strong> Because your building is relatively short (under 21 meters), you only need a "Fire Advisory Certificate" rather than a massive renovation. Just install standard ABC fire extinguishers, and put CO2 extinguishers near your electric panels.</li>';
+            }
+
+            // 5. Aesthetics & Staffing (Only shows if Yes)
+            if (aesthetic === 'Yes') {
+                report += '<li><strong>👨‍⚕️ Hiring Doctors:</strong> Only specialized doctors (MD in Dermatology or Plastic Surgery) are legally allowed to do laser, injectable, or hair transplant procedures. Regular staff are strictly prohibited from doing this.</li>';
+                report += '<li><strong>🏥 Room Setup:</strong> Make sure your laser treatment room is at least 12x12 feet. Washbasins must be placed at least 5 feet away from any laser equipment to prevent accidents.</li>';
+            }
+
+            // 6. Medical Waste & Chemicals
+            report += '<li><strong>🗑️ Medical Waste:</strong> You need to sign a contract with a local bio-medical waste collection company. Never keep medical waste in your clinic for more than 48 hours. Stop using standard plastic bags and switch to barcode-tracked bins.</li>';
+            
+            // Only shows if Yes
+            if (chemicals === 'Yes') {
+                report += '<li><strong>🧪 Chemical Waste:</strong> Because you handle chemical peels and reagents, you must apply for a specific "Hazardous Waste Authorization." You must also neutralize these liquids (like adding sodium hypochlorite) before putting them down the drain.</li>';
+            }
+
+            // 7. Food Safety (Only shows if Yes)
+            if (supplements === 'Yes') {
+                report += '<li><strong>💊 Selling Supplements:</strong> To legally sell health supplements, you must apply for an FSSAI license through the online FoSCOS portal. Make sure your storage area is kept highly hygienic for surprise inspections.</li>';
+            }
+
+            // 8. The Step-by-Step Order
+            report += '<li><strong>📋 What order should I get these in?</strong><br>To avoid getting stuck in government paperwork, get your licenses in this exact order:<br><strong>Step 1:</strong> Get your Clinical Establishment License.<br><strong>Step 2:</strong> Sign your Waste Collection Agreement.<br><strong>Step 3:</strong> Apply for your Fire Certificate.<br><strong>Step 4:</strong> Apply for your Food Safety (FSSAI) License last.</li>';
+
+            report += '</ul>';
+
+            document.getElementById('report-output').innerHTML = report;
+            navigate('view-report');
+        }
+    </script>
+</body>
+</html>
